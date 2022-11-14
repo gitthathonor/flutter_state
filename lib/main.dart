@@ -6,7 +6,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// 화면
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -25,29 +26,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int num = 1;
 
-  void increase() {
+  void Increase() {
+    // setState없이 num++ 로는 rebuild가 안됨.
     setState(() {
+      // 값을 변경하면서 rebuild가 되게 함.
       num++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    double size = MediaQuery.of(context).size.width;
-    double screenSize = size * 0.8;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(child: AComponent(num)),
-          Expanded(child: BComponent(increase)),
+          Expanded(child: BComponent(Increase)),
+          // Increase를 전달하는거.
         ],
       ),
     );
   }
 }
 
-// 컨슈머(소비자)
+// 컨슈머
 class AComponent extends StatelessWidget {
   final int num;
   const AComponent(this.num, {Key? key}) : super(key: key);
@@ -58,12 +60,15 @@ class AComponent extends StatelessWidget {
       color: Colors.yellow,
       child: Column(
         children: [
-          Text("ACompoent"),
+          Text("AComponent"),
           Expanded(
             child: Align(
               child: Text(
                 "$num",
-                style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           )
@@ -73,10 +78,10 @@ class AComponent extends StatelessWidget {
   }
 }
 
-// 서플라이어 공급자
+// 서플라이어 ( 공급자 )
 class BComponent extends StatelessWidget {
-  final Function increase;
-  const BComponent(this.increase, {Key? key}) : super(key: key);
+  final Function Increase;
+  const BComponent(this.Increase, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,18 +89,23 @@ class BComponent extends StatelessWidget {
       color: Colors.blue,
       child: Column(
         children: [
-          Text("BCompoent"),
+          Text("BComponent"),
           Expanded(
             child: Align(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Increase();
+                },
                 child: Text(
                   "숫자증가",
-                  style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
-          ),
+          )
         ],
       ),
     );
